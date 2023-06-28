@@ -11,21 +11,19 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('coments', function (Blueprint $table) {
             $table->id();
-            $table->string('FirstName');
-            $table->string('LastName')->nulleble();
-            $table->string('email')->unique();
-            $table->string('username')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->timestamp('start_Date')->nullable();
-            $table->timestamp('endDate')->nullable();
-            $table->string('password');
-            $table->rememberToken();
+
+            $table->longText('comentario')->require();
+            $table->BigInteger('ticket_id')->unsigned()->require();
+            $table->unsignedBigInteger('user_id')->require();
             $table->timestamps();
+
             $table->unsignedBigInteger('created_by')->index();
             $table->unsignedBigInteger('updated_by')->index();
 
+            $table->foreign('ticket_id')->references('id')->on('tickets');
+            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 
@@ -34,6 +32,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('coments');
     }
 };
